@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Arrays;
+
 
 public class Main {
 
@@ -8,8 +8,18 @@ public class Main {
     File file = new File("1");
 
     public static void main(String[] args) throws FileNotFoundException {
+        // task1();
 
+        filePrinter();
 
+        MultifunctionDevice mfu = new MultifunctionDevice();
+        mfu.printer( 10 );
+        mfu.printer( 15 );
+        mfu.scanner( 10 );
+        mfu.scanner( 7 );
+    }
+
+    private static void task1 (){
         new Thread( new Runnable() {
             public void run() {
                 for (int i = 0; i < 5; i++) {
@@ -66,18 +76,11 @@ public class Main {
                 }
             }
         } ).start();
-
-    //    filePrinter();
-
-        MultifunctionDevice mfu = new MultifunctionDevice();
-        mfu.printer( 10 );
-        mfu.printer( 15 );
-        mfu.scanner( 10 );
-        mfu.scanner( 7 );
     }
 
 
-    private static void filePrinter () throws FileNotFoundException {
+
+    private static void filePrinter ()  {
         final String sync = "123";
 
         new Thread( new Runnable() {
@@ -137,6 +140,11 @@ public class Main {
                 }
             }
         } ).start();
+    }
+}
+
+
+
 //        new Thread( new Runnable() {
 //            public void run() {
 //                for (int i = 0; i < 11; i++) {
@@ -169,5 +177,3 @@ public class Main {
 //
 //            }
 //        } ).start();
-    }
-}
