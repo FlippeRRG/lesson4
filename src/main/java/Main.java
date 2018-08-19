@@ -67,7 +67,13 @@ public class Main {
             }
         } ).start();
 
-        filePrinter();
+    //    filePrinter();
+
+        MultifunctionDevice mfu = new MultifunctionDevice();
+        mfu.printer( 10 );
+        mfu.printer( 15 );
+        mfu.scanner( 10 );
+        mfu.scanner( 7 );
     }
 
 
