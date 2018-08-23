@@ -6,7 +6,11 @@
 
     <groupId>lesson4</groupId>
     <artifactId>lesson4</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>lesson5</module>
+    </modules>
 
 
 </project>
