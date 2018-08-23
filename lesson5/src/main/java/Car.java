@@ -1,15 +1,14 @@
-import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Car implements Runnable {
     private static int CARS_COUNT;
-    private static CountDownLatch cdl = new CountDownLatch( 4 );
-    private ReentrantLock lock = new ReentrantLock(  );
+    private static int counterOfFinish;
+
     static {
         CARS_COUNT = 0;
+        counterOfFinish = 0;
     }
+    private static  CountDownLatch cdl;
     private Race race;
     private int speed;
     private String name;
@@ -28,15 +27,14 @@ public class Car implements Runnable {
     @Override
     public void run() {
         try {
+            cdl = new CountDownLatch( CARS_COUNT );
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int)(Math.random() * 800));
             System.out.println(this.name + " готов");
 
             cdl.countDown();
             if (cdl.getCount()==0){
-                lock.lock();
                 System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
-                lock.unlock();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,10 +43,25 @@ public class Car implements Runnable {
         for (int i = 0; i < race.getStages().size(); i++) {
             try {
                 cdl.await();
+                Thread.sleep( 100 ); // Для того чтобы объявление о победителе гарантированно вывелось до начала гонки - если нет слипа то обьявление бывает не в начале.
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             race.getStages().get(i).go(this);
+            cdl.countDown();
+        }
+
+
+        try {
+            cdl.await();
+            counterOfFinish++;
+            if (counterOfFinish==4){
+                System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка Закончилась!!!");
+            } else if(counterOfFinish==1){
+                System.out.println(this.getName() + " Winner!");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
