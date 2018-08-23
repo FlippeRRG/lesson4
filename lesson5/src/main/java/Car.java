@@ -31,7 +31,6 @@ public class Car implements Runnable {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int)(Math.random() * 800));
             System.out.println(this.name + " готов");
-
             cdl.countDown();
             if (cdl.getCount()==0){
                 System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
@@ -50,8 +49,10 @@ public class Car implements Runnable {
             race.getStages().get(i).go(this);
             cdl.countDown();
         }
+        printFinalAndWinner();
+    }
 
-
+    private void printFinalAndWinner(){
         try {
             cdl.await();
             counterOfFinish++;
